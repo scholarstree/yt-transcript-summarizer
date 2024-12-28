@@ -2,6 +2,7 @@ import yt_dlp
 from youtube_transcript_api import YouTubeTranscriptApi
 from youtube_transcript_api.formatters import TextFormatter, JSONFormatter
 import google.generativeai as genai
+import re
 
 # API and Model Configuration
 def configure_gemini_api(api_key, model_name="gemini-1.5-flash"):
@@ -95,8 +96,11 @@ def fetch_all_transcripts(video_url, formatter_type="text"):
             Auto-generated transcripts are suffixed with '_auto'.
     """
     try:
-        # Extract video ID
-        video_id = video_url.split("v=")[1].split("&")[0]
+        # Extract video ID using a regex to support both standard and shortened YouTube URLs
+        match = re.search(r"(?:v=|\/)([0-9A-Za-z_-]{11})", video_url)
+        if not match:
+            raise ValueError("Invalid YouTube URL. Could not extract video ID.")
+        video_id = match.group(1)
 
         # Get all available transcripts
         transcript_list = YouTubeTranscriptApi.list_transcripts(video_id)
@@ -121,8 +125,8 @@ def fetch_all_transcripts(video_url, formatter_type="text"):
         print(f"Could not retrieve transcripts for the video: {e}")
     except YouTubeTranscriptApi.TranscriptsDisabled as e:
         print(f"Transcripts are disabled for this video: {e}")
-    except IndexError:
-        print("Invalid YouTube video URL format. Please check the URL.")
+    except ValueError as e:
+        print(e)
     except Exception as e:
         print(f"An unexpected error occurred while fetching transcripts: {e}")
     
