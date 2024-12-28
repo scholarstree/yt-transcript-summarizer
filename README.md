@@ -31,8 +31,12 @@ pip install -r requirements.txt
 
 ├── assets/\
 │ ├── app.png # App screenshot\
+├── notebooks/\
+│ ├── how_it_works.ipynb # Notebook demonstrating steps involved\
+├── templates/\
 │ ├── summarization_prompt.jinja # Default Jinja2 template for summarization prompt\
-├── utils.py # Utility functions for the app\
+├── utils/\
+│ ├── utils.py # Utility functions for the app\
 ├── app.py # Main Streamlit application\
 ├── requirements.txt # Python dependencies\
 ├── README.md # Documentation

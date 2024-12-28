@@ -1,6 +1,6 @@
 import streamlit as st
 from jinja2 import Environment, FileSystemLoader
-from utils import *
+from utils.utils import *
 import logging
 
 # Set up Jinja environment
